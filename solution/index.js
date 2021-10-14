@@ -1,13 +1,4 @@
 module.exports = function (Homework) {
-  let promisify =
-    (fn) =>
-    (...args) =>
-      new Promise((resolve, reject) => {
-        fn(...args, (r) => {
-          resolve(r);
-        });
-      });
-
   const {
     AsyncArray,
     add,
@@ -19,20 +10,30 @@ module.exports = function (Homework) {
     lessOrEqual,
   } = Homework;
 
+  let promisify =
+    (fn) =>
+    (...args) =>
+      new Promise((resolve, reject) => {
+        fn(...args, (r) => {
+          resolve(r);
+        });
+      });
+
+  let res = initialValue;
+  const newFn = promisify(fn);
+  const newGet = promisify(asyncArray.get);
+  const newLength = promisify(asyncArray.length);
+  const newLess = promisify(less);
+  const newAdd = promisify(add);
+
   return (asyncArray, fn, initialValue, cb) => {
     let main = async () => {
-      let res = initialValue;
-      let newFn = promisify(fn);
-      let newGet = promisify(asyncArray.get);
-      let newLength = promisify(asyncArray.length);
-      let newLess = promisify(less);
-      let newAdd = promisify(add);
       try {
         let length = 0;
         length = await newLength();
         // console.log("length=" + length);
         for (let i = 0; await newLess(i, length); i = await newAdd(i, 1)) {
-          // console.log(res);
+          // console.log(i);
 
           res = await newFn(res, await newGet(i), i, asyncArray);
         }

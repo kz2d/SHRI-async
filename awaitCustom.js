@@ -82,24 +82,25 @@ function reduce(asyncArray, fn, initialValue, cb) {
           resolve(r);
         });
       });
+  let res = initialValue;
+  const newFn = promisify(fn);
+  const newGet = promisify(asyncArray.get);
+  const newLength = promisify(asyncArray.length);
+  const newLess = promisify(less);
+  const newAdd = promisify(add);
 
   let main = async () => {
-    let res = initialValue;
-    let newFn = promisify(fn);
-    let newGet = promisify(asyncArray.get);
-    let newLength = promisify(asyncArray.length);
-    let newLess = promisify(less);
     try {
       let length = 0;
       length = await newLength();
-      console.log("length=" + length);
-      for (let i = 0; await newLess(i, length); i++) {
-        console.log(res);
+      // console.log("length=" + length);
+      for (let i = 0; await newLess(i, length); i = await newAdd(i, 1)) {
+        // console.log(i);
 
         res = await newFn(res, await newGet(i), i, asyncArray);
       }
     } catch (e) {
-      console.log("error=" + e);
+      // console.log("error=" + e);
     }
     return res;
   };
