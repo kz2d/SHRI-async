@@ -19,14 +19,14 @@ module.exports = function (Homework) {
         });
       });
 
-  let res = initialValue;
-  const newFn = promisify(fn);
-  const newGet = promisify(asyncArray.get);
-  const newLength = promisify(asyncArray.length);
   const newLess = promisify(less);
   const newAdd = promisify(add);
 
   return (asyncArray, fn, initialValue, cb) => {
+    let res = initialValue;
+    const newFn = promisify(fn);
+    const newGet = promisify(asyncArray.get);
+    const newLength = promisify(asyncArray.length);
     let main = async () => {
       let length = 0;
       length = await newLength();
