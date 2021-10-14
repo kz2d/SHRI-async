@@ -28,17 +28,10 @@ module.exports = function (Homework) {
 
   return (asyncArray, fn, initialValue, cb) => {
     let main = async () => {
-      try {
-        let length = 0;
-        length = await newLength();
-        // console.log("length=" + length);
-        for (let i = 0; await newLess(i, length); i = await newAdd(i, 1)) {
-          // console.log(i);
-
-          res = await newFn(res, await newGet(i), i, asyncArray);
-        }
-      } catch (e) {
-        // console.log("error=" + e);
+      let length = 0;
+      length = await newLength();
+      for (let i = 0; await newLess(i, length); i = await newAdd(i, 1)) {
+        res = await newFn(res, await newGet(i), i, asyncArray);
       }
       return res;
     };
