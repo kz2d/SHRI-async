@@ -29,14 +29,14 @@ module.exports = function (Homework) {
       try {
         let length = 0;
         length = await newLength();
-        console.log("length=" + length);
+        // console.log("length=" + length);
         for (let i = 0; await newLess(i, length); i++) {
-          console.log(res);
+          // console.log(res);
 
           res = await newFn(res, await newGet(i), i, asyncArray);
         }
       } catch (e) {
-        console.log("error=" + e);
+        // console.log("error=" + e);
       }
       return res;
     };
