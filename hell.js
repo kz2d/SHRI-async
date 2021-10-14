@@ -128,7 +128,7 @@ function reduce(asyncArray, fn, initialValue, cb) {
       res = some;
       add(counter, 1, (r) => {
         counter = r;
-        console.log(`res=${res}`);
+        // console.log(`res=${res}`);
         equal(counter, length, (r) => {
           if (counter == length) {
             cb(res);
@@ -140,7 +140,7 @@ function reduce(asyncArray, fn, initialValue, cb) {
         });
       });
     };
-    console.log(`length=${length}`);
+    // console.log(`length=${length}`);
     asyncArray.get(counter, (val) => {
       fn(res, val, counter, asyncArray, rFn);
     });
