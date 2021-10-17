@@ -10,31 +10,29 @@ module.exports = function (Homework) {
     lessOrEqual,
   } = Homework;
 
-  let promisify =
-    (fn) =>
-    (...args) =>
-      new Promise((resolve, reject) => {
-        fn(...args, (r) => {
-          resolve(r);
-        });
-      });
-
-  const newLess = promisify(less);
-  const newAdd = promisify(add);
-
   return (asyncArray, fn, initialValue, cb) => {
     let res = initialValue;
-    const newFn = promisify(fn);
-    const newGet = promisify(asyncArray.get);
-    const newLength = promisify(asyncArray.length);
-    let main = async () => {
-      let length = 0;
-      length = await newLength();
-      for (let i = 0; await newLess(i, length); i = await newAdd(i, 1)) {
-        res = await newFn(res, await newGet(i), i, asyncArray);
-      }
-      return res;
-    };
-    main().then(cb);
+    let counter = 0;
+
+    asyncArray.length((length) => {
+      let rFn = (some) => {
+        res = some;
+        add(counter, 1, (r) => {
+          counter = r;
+          equal(counter, length, (r) => {
+            if (counter == length) {
+              cb(res);
+            } else {
+              asyncArray.get(counter, (val) => {
+                fn(res, val, counter, asyncArray, rFn);
+              });
+            }
+          });
+        });
+      };
+      asyncArray.get(counter, (val) => {
+        fn(res, val, counter, asyncArray, rFn);
+      });
+    });
   };
 };
